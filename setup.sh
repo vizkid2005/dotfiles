@@ -123,6 +123,14 @@ print_success() {
   printf "\e[0;32m  [✔] $1\e[0m\n"
 }
 
+install_fonts() {
+    echo "Installing Powerline fonts ... "
+    chmod +xrw $SCRIPT_DIR/fonts/install_fonts.sh
+    cd fonts
+    ./install_fonts.sh
+    cd ..
+}
+
 # Warn user this script will overwrite current dotfiles
 while true; do
   read -p "Warning: this will overwrite your current dotfiles. Continue? [y/n] " yn
@@ -138,7 +146,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd -P)"
 DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
 
 
-dir=~/dotfiles                        # dotfiles directory
+dir=~/workspace/dotfiles                        # dotfiles directory
 dir_backup=~/dotfiles_old             # old dotfiles backup directory
 
 # Get current dir (so run this script from anywhere)
@@ -159,14 +167,6 @@ echo "done"
 #
 # Actual symlink stuff
 #
-
-
-# Atom editor settings
-#echo -n "Copying Atom settings.."
-#mv -f ~/.atom ~/dotfiles_old/
-#ln -s $HOME/dotfiles/atom ~/.atom
-#echo "done"
-
 
 declare -a FILES_TO_SYMLINK=(
 
@@ -230,10 +230,11 @@ main() {
   unset FILES_TO_SYMLINK
 
   # Copy binaries
-  ln -fs $HOME/dotfiles/bin $HOME
+  ln -fs $HOME/workspace/dotfiles/bin $HOME
 
   declare -a BINARIES=(
     'ssh-gen'
+    'batcharge.py'
   )
 
   for i in ${BINARIES[@]}; do
@@ -244,7 +245,7 @@ main() {
   unset BINARIES
 
   # Symlink online-check.sh
-  ln -fs $HOME/dotfiles/lib/online-check.sh $HOME/online-check.sh
+  ln -fs $HOME/workspace/dotfiles/lib/online-check.sh $HOME/online-check.sh
 
   # Write out current crontab
   crontab -l > mycron
@@ -290,28 +291,14 @@ install_zsh () {
 }
 
 # Package managers & packages
-
 . "$DOTFILES_DIR/install/brew.sh"
-#. "$DOTFILES_DIR/install/npm.sh"
-
 if [ "$(uname)" == "Darwin" ]; then
     . "$DOTFILES_DIR/install/brew-cask.sh"
 fi
 
 main
 install_zsh
-
-###############################################################################
-# Atom                                                                        #
-###############################################################################
-
-# Copy over Atom configs
-#cp -r atom/packages.list $HOME/.atom
-
-# Install community packages
-#apm list --installed --bare - get a list of installed packages
-#apm install --packages-file $HOME/.atom/packages.list
-
+install_fonts
 ###############################################################################
 # Zsh                                                                         #
 ###############################################################################
@@ -328,7 +315,7 @@ ln -s $(pwd)/zsh/themes/nick.zsh-theme $HOME/.oh-my-zsh/themes
 defaults write com.apple.terminal StringEncodings -array 4
 
 # Install the Solarized Dark theme for iTerm
-open "${HOME}/dotfiles/iterm/themes/Solarized Dark.itermcolors"
+open "${HOME}/workspace/dotfiles/iterm/themes/Solarized Dark.itermcolors"
 
 # Don’t display the annoying prompt when quitting iTerm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false

@@ -8,9 +8,6 @@ brew tap caskroom/versions
 # Install packages
 apps=(
     1password
-    #gyazo
-    #dropbox
-    google-drive
     spectacle
     flux
     dash
@@ -21,9 +18,7 @@ apps=(
     #atom
     #webstorm
     #firefox
-    #firefoxnightly
     google-chrome
-    #google-chrome-canary
     kaleidoscope
     macdown
     #opera
@@ -36,6 +31,7 @@ apps=(
     vlc
     #elmedia-player
     utorrent
+    google-backup-and-sync
 )
 
 brew cask install "${apps[@]}"
