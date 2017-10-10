@@ -59,6 +59,7 @@ apps=(
     homebrew/dupes/openssh
     autojump
     python
+    neovim
     source-highlight
     the_silver_searcher
     tree
